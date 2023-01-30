@@ -59,9 +59,9 @@ Vtorage.version 是所有 对象都设置的版本号，若有个别对象希望
 
 ```js
 const store = Vtorage('user-data', {
-  name:'dog';
-  age: 20,
-}, {
-  version: '0.0.2'
-});
+    name:'dog';
+    age: 20,
+  }, 
+  version: '_0.0.2'
+);
 ```

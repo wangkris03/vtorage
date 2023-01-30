@@ -1,6 +1,6 @@
 {
   "name": "vtorage",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "For storage with version",
   "private": false,
   "types": "lib/index.ts",

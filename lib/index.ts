@@ -4,30 +4,33 @@ export interface IVtorage<T> {
     assign: (obj: Partial<T>) => void;
     clear: () => void;
     val: T;
+    version: string;
   }
   
   export const Vtorage = <T>(
     key: string,
     init: T,
-    storage: "localStorage" | "sessionStorage" | "memory" = "localStorage"
+    storage: "localStorage" | "sessionStorage" | "memory" = "localStorage",
+    version = "_0.0.1"
   ): IVtorage<T> => {
     if (typeof init !== "object") {
       throw "db: init need a object";
     }
-  
+    const versionKey = `${key}${version}`
     const db = {
+      version,
       val: JSON.parse(JSON.stringify(init)),
       defaultValues: JSON.parse(JSON.stringify(init)),
       set: (obj: T) => {
         db.val = obj;
         if (storage !== "memory") {
-          window[storage].setItem(key, JSON.stringify(db.val));
+          window[storage].setItem(versionKey, JSON.stringify(db.val));
         }
       },
       assign: (obj: T) => {
         Object.assign(db.val, obj);
         if (storage !== "memory") {
-          window[storage].setItem(key, JSON.stringify(db.val));
+          window[storage].setItem(versionKey, JSON.stringify(db.val));
         }
       },
       clear: () => {
@@ -36,7 +39,7 @@ export interface IVtorage<T> {
     };
   
     if (storage !== "memory") {
-      const old = window[storage].getItem(key);
+      const old = window[storage].getItem(versionKey);
       if (old) {
         try {
           const obj = JSON.parse(old);
